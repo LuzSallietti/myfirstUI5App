@@ -1,0 +1,15 @@
+<mvc:View controllerName="invoices.invoices.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <VBox id="detailView">
+        <!-- el fragmento de título -->
+    <core:Fragment fragmentName="invoices.invoices.fragments.navigation" type="XML" />
+
+    <!-- el fragmento de contenido -->
+    <core:Fragment fragmentName="invoices.invoices.fragments.content" type="XML" />
+        
+    </VBox>    
+
+</mvc:View>

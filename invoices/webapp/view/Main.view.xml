@@ -1,0 +1,42 @@
+<mvc:View controllerName="invoices.invoices.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+        <Toolbar class="sapUiMediumMarginTopBottom">
+			<SearchField width="50%" liveChange=".onSearch" />
+		</Toolbar>        
+        <Table id="invoicesTable"
+         items="{path:'invoiceModel>/'}">
+            <columns>
+                <Column>
+                    <Text text="{i18n>customerId}"/>
+                </Column>
+                <Column>
+                    <Text text="{i18n>customerName}"/>
+                </Column>
+                 <Column>
+                    <Text text="{i18n>orderDate}"/>
+                </Column>
+                <Column>
+                    <Text text="{i18n>orderId}"/>
+                </Column>
+                <Column>
+                    <Text text="{i18n>extendedPrice}"/>
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Active" vAlign="Middle" press="onItemPress">
+                    <cells> 
+                    <ObjectIdentifier title="" text="{invoiceModel>CustomerID}"/> 
+                    <ObjectIdentifier title="" text="{invoiceModel>CustomerName}"/>
+                    <ObjectIdentifier title="" text="{path:'invoiceModel>OrderDate', formatter:'.Formatter.formatDate'}"/> 
+                    <ObjectIdentifier title="" text="{invoiceModel>OrderID}"/> 
+                    <ObjectIdentifier title="" text="{invoiceModel>ExtendedPrice}"/>   
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        </content>
+    </Page>
+</mvc:View>
