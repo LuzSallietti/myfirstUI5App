@@ -4,25 +4,25 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "invoices/invoices/util/Formatter",
-    "invoices/invoices/util/Constants",    
+    "invoices/invoices/util/Constants",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
     function (Controller,
-	JSONModel,	
-	Filter,
-	FilterOperator,
-	Formatter,
-	Constants,
-	) {
+        JSONModel,
+        Filter,
+        FilterOperator,
+        Formatter,
+        Constants,
+    ) {
         "use strict";
 
         return Controller.extend("invoices.invoices.controller.Main", {
             Formatter: Formatter,
-            onInit: function () {              
-                
-                const url = sap.ui.require.toUrl(Constants.namespace.name) + Constants.service.northwindUrl; 
+            onInit: function () {
+
+                const url = sap.ui.require.toUrl(Constants.namespace.name) + Constants.service.northwindUrl;
                 this._model = new sap.ui.model.odata.v2.ODataModel(url, {
                     json: true,
                     headers: {
@@ -39,18 +39,58 @@ sap.ui.define([
                     error: jQuery.proxy(this.error, this)
                 })
 
-                
 
             },
             success: function (oData) {
                 const oModel = new JSONModel(oData.results);
+                console.log(oModel);
+                const aCustomerIds = oModel.getProperty("/").map(item => item.CustomerID);
+                const aCustomerNames = oModel.getProperty("/").map(item => item.CustomerName);
+
+                // Elimina duplicados usando un conjunto (Set) para usar en el ComboBox
+                const uniqueCustomerIds = [...new Set(aCustomerIds)];
+                const uniqueCustomerNames = [...new Set(aCustomerNames)];
+
+                // Los guardo en una propiedad de tu modelo existente
+                oModel.setProperty(Constants.properties.uniqueCustomerIds, uniqueCustomerIds);
+                oModel.setProperty(Constants.properties.uniqueCustomerNames, uniqueCustomerNames);
+
                 this.getView().setModel(oModel, Constants.models.invoiceModel); //Constants
-                console.log(oModel); // corroborar si veo ok el modelo?*/
             },
             error: function () {
                 alert("Error");
             },
+            //FILTROS
+            applyFilters: function () {
+                const oTable = this.byId("invoicesTable");
+                const oTableBinding = oTable.getBinding("items");
+                const customerIdValue = this.byId("CustomerIdCB").getValue();
+                const customerNameValue = this.byId("CustomerNameCB").getValue();
+                            
+                const filters = [];
             
+                if (customerIdValue) {
+                    filters.push(new Filter(Constants.filters.customerId, FilterOperator.Contains, customerIdValue));
+                }
+            
+                if (customerNameValue) {
+                    filters.push(new Filter(Constants.filters.customerName, FilterOperator.Contains, customerNameValue));
+                }
+            
+                if (filters.length > 0) {
+                    const queries = new Filter(filters, false); /**El parámetro false en la creación del objeto Filter indica que los filtros dentro del arreglo filters se aplicarán utilizando una lógica "OR", en lugar de una lógica "AND". */
+                    oTableBinding.filter(queries);
+                } else {
+                    oTableBinding.filter([]);
+                }
+            },
+            
+            cleanFilters: function () {
+                this.byId("CustomerIdCB").setValue("");
+                this.byId("CustomerNameCB").setValue("");
+                this.applyFilters();
+            },
+
             //BUSCADOR
             onSearch: function (oEvent) {
                 var oTable = this.byId("invoicesTable");

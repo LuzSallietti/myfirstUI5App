@@ -1,10 +1,21 @@
-<mvc:View controllerName="invoices.invoices.controller.Main"
+<mvc:View controllerName="invoices.invoices.controller.Main"    
+	xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
         <content>
         <Toolbar class="sapUiMediumMarginTopBottom">
 			<SearchField width="50%" liveChange=".onSearch" />
+            <ComboBox id="CustomerIdCB"
+                items="{path: 'invoiceModel>/UniqueCustomerIds'}">
+                <core:Item key="{invoiceModel>}" text="{invoiceModel>}"/>
+            </ComboBox>
+            <ComboBox id="CustomerNameCB"
+                items="{path: 'invoiceModel>/UniqueCustomerNames'}">
+                <core:Item key="{invoiceModel>}" text="{invoiceModel>}"/>
+            </ComboBox>
+            <Button type="Emphasized" text="Buscar" press="applyFilters" />
+            <Button text="Limpiar filtros" press="cleanFilters" />				
 		</Toolbar>        
         <Table id="invoicesTable"
          items="{path:'invoiceModel>/'}">

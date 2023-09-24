@@ -8,7 +8,9 @@ sap.ui.define([], function (){
             northwindUrl:"/northwind/northwind.svc" 
         },
         properties: {
-           invoices: "/Invoices"
+           invoices: "/Invoices",
+           uniqueCustomerIds: "/UniqueCustomerIds",
+           uniqueCustomerNames: "/UniqueCustomerNames"
         },
         models: {
             invoiceModel: "invoiceModel",
@@ -18,7 +20,8 @@ sap.ui.define([], function (){
             detailRoute: "RouteDetail"
         },
         filters: {
-            customerName: "CustomerName"
+            customerName: "CustomerName",
+            customerId: "CustomerID"
         }
         
     }
