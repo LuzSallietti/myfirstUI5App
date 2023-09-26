@@ -39,6 +39,13 @@ sap.ui.define([
                     error: jQuery.proxy(this.error, this)
                 })
 
+                //crear el modelo para almacenar valor de busqueda
+
+                var oQueryModel = new JSONModel();
+                oQueryModel.setProperty(Constants.properties.nameQueryValue, "");
+                oQueryModel.setProperty(Constants.properties.idQueryValue, "");
+                
+                this.getView().setModel(oQueryModel, Constants.models.queryModel); // REFACTOREAR el nombre del modelo debe ser toolsModel
 
             },
             success: function (oData) {
@@ -62,10 +69,12 @@ sap.ui.define([
             },
             //FILTROS
             applyFilters: function () {
+              
                 const oTable = this.byId("invoicesTable");
                 const oTableBinding = oTable.getBinding("items");
-                const customerIdValue = this.byId("CustomerIdCB").getValue();
-                const customerNameValue = this.byId("CustomerNameCB").getValue();
+                const customerIdValue = this.getView().getModel(Constants.models.queryModel).getProperty(Constants.properties.idQueryValue);
+                const customerNameValue = this.getView().getModel(Constants.models.queryModel).getProperty(Constants.properties.nameQueryValue);
+              
                             
                 const filters = [];
             
@@ -84,10 +93,10 @@ sap.ui.define([
                     oTableBinding.filter([]);
                 }
             },
-            
+                       
             cleanFilters: function () {
-                this.byId("CustomerIdCB").setValue("");
-                this.byId("CustomerNameCB").setValue("");
+                this.getView().getModel(Constants.models.queryModel).setProperty(Constants.properties.idQueryValue, "");
+                this.getView().getModel(Constants.models.queryModel).setProperty(Constants.properties.nameQueryValue, "");
                 this.applyFilters();
             },
 

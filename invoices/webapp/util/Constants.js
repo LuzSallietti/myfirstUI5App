@@ -10,11 +10,14 @@ sap.ui.define([], function (){
         properties: {
            invoices: "/Invoices",
            uniqueCustomerIds: "/UniqueCustomerIds",
-           uniqueCustomerNames: "/UniqueCustomerNames"
+           uniqueCustomerNames: "/UniqueCustomerNames",
+           nameQueryValue: "/nameQueryValue",
+           idQueryValue: "/idQueryValue",
         },
         models: {
             invoiceModel: "invoiceModel",
-            i18n: "i18n"
+            i18n: "i18n",
+            queryModel : "queryModel"
         },
         routes: {
             detailRoute: "RouteDetail"

@@ -5,17 +5,19 @@
     <Page id="page" title="{i18n>title}">
         <content>
         <Toolbar class="sapUiMediumMarginTopBottom">
-			<SearchField width="50%" liveChange=".onSearch" />
+			<SearchField width="50%" liveChange=".onSearch" placeholder="Search" />
             <ComboBox id="CustomerIdCB"
+                selectedKey="{queryModel>/idQueryValue}"
                 items="{path: 'invoiceModel>/UniqueCustomerIds'}">
                 <core:Item key="{invoiceModel>}" text="{invoiceModel>}"/>
             </ComboBox>
             <ComboBox id="CustomerNameCB"
+                selectedKey="{queryModel>/nameQueryValue}"                
                 items="{path: 'invoiceModel>/UniqueCustomerNames'}">
                 <core:Item key="{invoiceModel>}" text="{invoiceModel>}"/>
             </ComboBox>
-            <Button type="Emphasized" text="Buscar" press="applyFilters" />
-            <Button text="Limpiar filtros" press="cleanFilters" />				
+            <Button type="Emphasized" text="Search" press="applyFilters" />
+            <Button text="Clear filters" press="cleanFilters" />				
 		</Toolbar>        
         <Table id="invoicesTable"
          items="{path:'invoiceModel>/'}">
